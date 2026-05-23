@@ -30,5 +30,4 @@ public class Candidate {
 	private String preferredLocation;
 
 	private String fileName;
-
 }
