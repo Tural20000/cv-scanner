@@ -5,14 +5,14 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>3.5.14</version>
+		<version>3.4.2</version> <!-- Batch ilə tam stabil və problemsiz işləməsi üçün 3.4.2 versiyasına çəkdik -->
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.turalabdullayev</groupId>
 	<artifactId>cv-scanner</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name/>
-	<description/>
+	<name>cv-scanner</name>
+	<description>Automated Bulk CV Parsing System</description>
 	<url/>
 	<licenses>
 		<license/>
@@ -30,6 +30,7 @@
 		<java.version>17</java.version>
 	</properties>
 	<dependencies>
+		<!-- Web & Data JPA -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
@@ -39,6 +40,32 @@
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
 
+		<!-- Spring Batch (Böyük həcmli dataları idarə etmək üçün) -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-batch</artifactId>
+		</dependency>
+
+		<!-- Apache Tika (PDF və Word sənədlərindən mətni oxumaq üçün) -->
+		<dependency>
+			<groupId>org.apache.tika</groupId>
+			<artifactId>tika-core</artifactId>
+			<version>2.9.2</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.tika</groupId>
+			<artifactId>tika-parsers-standard-package</artifactId>
+			<version>2.9.2</version>
+		</dependency>
+
+		<!-- Swagger / OpenAPI (API monitorinqi və sənədləşməsi üçün) -->
+		<dependency>
+			<groupId>org.springdoc</groupId>
+			<artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+			<version>2.5.0</version>
+		</dependency>
+
+		<!-- Database Drivers & Utilities -->
 		<dependency>
 			<groupId>org.postgresql</groupId>
 			<artifactId>postgresql</artifactId>
