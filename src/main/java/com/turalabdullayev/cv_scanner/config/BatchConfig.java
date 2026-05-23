@@ -20,6 +20,7 @@ import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.transaction.PlatformTransactionManager;
 
 import com.turalabdullayev.cv_scanner.batch.CvItemProcessor;
+import com.turalabdullayev.cv_scanner.batch.JobCompletionNotificationListener;
 import com.turalabdullayev.cv_scanner.model.Candidate;
 import com.turalabdullayev.cv_scanner.repository.CandidateRepository;
 
@@ -30,13 +31,16 @@ public class BatchConfig {
 	private final PlatformTransactionManager transactionManager;
 	private final CandidateRepository candidateRepository;
 	private final CvItemProcessor cvItemProcessor;
+	private final JobCompletionNotificationListener jobListener;
 
 	public BatchConfig(JobRepository jobRepository, PlatformTransactionManager transactionManager,
-			CandidateRepository candidateRepository, CvItemProcessor cvItemProcessor) {
+			CandidateRepository candidateRepository, CvItemProcessor cvItemProcessor,
+			JobCompletionNotificationListener jobListener) {
 		this.jobRepository = jobRepository;
 		this.transactionManager = transactionManager;
 		this.candidateRepository = candidateRepository;
 		this.cvItemProcessor = cvItemProcessor;
+		this.jobListener = jobListener;
 	}
 
 	@Bean
@@ -79,11 +83,12 @@ public class BatchConfig {
 						return null;
 					}
 					return cvItemProcessor.process(file);
-				}).writer(candidateWriter()).build();
+				}).writer(candidateWriter()).faultTolerant().skipLimit(5).skip(Exception.class).retryLimit(3)
+				.retry(IOException.class).build();
 	}
 
 	@Bean
 	public Job cvScannerJob(Step cvProcessStep) {
-		return new JobBuilder("cvScannerJob", jobRepository).start(cvProcessStep).build();
+		return new JobBuilder("cvScannerJob", jobRepository).listener(jobListener).start(cvProcessStep).build();
 	}
 }

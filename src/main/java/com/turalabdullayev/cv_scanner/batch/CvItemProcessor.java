@@ -25,7 +25,7 @@ public class CvItemProcessor implements ItemProcessor<File, Candidate> {
 		String location = extractLocation(rawText);
 
 		return Candidate.builder().fullName(fullName).yearsOfExperience(experience).technicalSkills(skills)
-				.preferredLocation(location).fileName(file.getName()).build();
+				.location(location).fileName(file.getName()).build();
 	}
 
 	private String extractFullName(String fileName, String text) {
