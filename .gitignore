@@ -31,3 +31,9 @@ build/
 
 ### VS Code ###
 .vscode/
+
+### Project Specific ###
+/temp-cvs/
+/postgres_cv_data/
+*.log
+.env

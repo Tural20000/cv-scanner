@@ -12,6 +12,24 @@ services:
       - "5434:5432"   
     volumes:
       - postgres_cv_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U cv_user -d cv_scanner_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  cv_scanner_app:
+    build: .
+    container_name: cv_scanner_app
+    ports:
+      - "8080:8080"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://cv_scanner_db:5432/cv_scanner_db
+      - SPRING_DATASOURCE_USERNAME=cv_user
+      - SPRING_DATASOURCE_PASSWORD=cv_password
+    depends_on:
+      cv_scanner_db:
+        condition: service_healthy
 
 volumes:
   postgres_cv_data:
